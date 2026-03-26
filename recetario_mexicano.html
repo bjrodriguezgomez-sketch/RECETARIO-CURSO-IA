@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recetario Familiar Mexicano</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracota: #C4622D;
+    --terracota-dark: #8B3E1A;
+    --oro: #D4A843;
+    --oro-light: #F0C96A;
+    --crema: #FDF6E3;
+    --crema-dark: #F0E6C8;
+    --verde: #2D5A27;
+    --verde-light: #4A7C3F;
+    --rojo: #9B1B1B;
+    --cafe: #4A2C0A;
+    --cafe-light: #7A5230;
+    --text-dark: #2C1A0A;
+    --text-mid: #5A3A1A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cafe);
+    font-family: 'Crimson Text', serif;
+    min-height: 100vh;
+    overflow: hidden;
+    background-image: 
+      radial-gradient(ellipse at 20% 50%, rgba(196,98,45,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(155,27,27,0.15) 0%, transparent 60%);
+  }
+
+  /* ===== MAGAZINE CONTAINER ===== */
+  #magazine {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* ===== SPREAD (2 páginas) ===== */
+  .spread {
+    display: none;
+    width: 96vw;
+    max-width: 1400px;
+    height: 92vh;
+    max-height: 820px;
+    position: relative;
+  }
+  .spread.active { display: flex; }
+
+  .page {
+    width: 50%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-left {
+    background: var(--crema);
+    border-radius: 8px 0 0 8px;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.4), inset -3px 0 8px rgba(0,0,0,0.1);
+    background-image: 
+      url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='60' height='60' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    border-right: 2px solid rgba(74,44,10,0.2);
+  }
+
+  .page-right {
+    background: var(--crema);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.4), inset 3px 0 8px rgba(0,0,0,0.1);
+  }
+
+  /* ===== SPINE SHADOW ===== */
+  .spine {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      rgba(74,44,10,0.3) 0%, 
+      rgba(74,44,10,0.6) 30%, 
+      rgba(74,44,10,0.6) 70%, 
+      rgba(74,44,10,0.3) 100%);
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  /* ===== PORTADA ===== */
+  #cover .page-left {
+    background: linear-gradient(135deg, var(--terracota-dark) 0%, var(--terracota) 40%, var(--rojo) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #cover .page-left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 20px,
+      rgba(255,255,255,0.03) 20px,
+      rgba(255,255,255,0.03) 40px
+    );
+  }
+
+  .cover-ornament {
+    width: 120px;
+    height: 120px;
+    border: 3px solid var(--oro);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    position: relative;
+    animation: spin-slow 20s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .cover-ornament::before {
+    content: '✦';
+    font-size: 48px;
+    color: var(--oro);
+    animation: spin-slow 20s linear infinite reverse;
+  }
+
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900;
+    color: var(--crema);
+    text-align: center;
+    line-height: 1.1;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+    margin-bottom: 16px;
+  }
+
+  .cover-subtitle {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--oro-light);
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .cover-divider {
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--oro), transparent);
+    margin: 16px auto;
+  }
+
+  .cover-count {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--oro-light);
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* Motivos decorativos portada */
+  .cover-flowers {
+    position: absolute;
+    font-size: 60px;
+    opacity: 0.15;
+    color: var(--oro);
+  }
+  .cover-flowers.tl { top: 10px; left: 10px; }
+  .cover-flowers.tr { top: 10px; right: 10px; transform: scaleX(-1); }
+  .cover-flowers.bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+  .cover-flowers.br { bottom: 10px; right: 10px; transform: scale(-1); }
+
+  /* ===== ÍNDICE ===== */
+  #index-spread .page-left,
+  #index-spread .page-right {
+    background: var(--crema-dark);
+    padding: 30px 28px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .index-header {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--terracota-dark);
+    text-align: center;
+    border-bottom: 3px double var(--terracota);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+
+  .index-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .index-btn {
+    background: linear-gradient(135deg, var(--terracota) 0%, var(--terracota-dark) 100%);
+    border: none;
+    border-radius: 6px;
+    padding: 12px 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  }
+
+  .index-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--oro);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .index-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
+  .index-btn:hover::before { transform: scaleX(1); }
+
+  .index-btn-num {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--oro-light);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .index-btn-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--crema);
+    line-height: 1.3;
+  }
+
+  .index-btn-emoji {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 20px;
+    opacity: 0.6;
+  }
+
+  /* ===== PÁGINAS DE RECETA ===== */
+  .recipe-left {
+    background: var(--crema);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .recipe-image-area {
+    height: 55%;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #d4956a 0%, #c4622d 50%, #8b3e1a 100%);
+  }
+
+  .recipe-image-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    mix-blend-mode: multiply;
+    display: none;
+  }
+
+  .recipe-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .recipe-image-placeholder .big-emoji {
+    font-size: 80px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .recipe-image-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(0,0,0,0.1) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  /* Ornamento en esquina de imagen */
+  .recipe-image-area::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40px;
+    background: linear-gradient(180deg, transparent, var(--crema));
+    pointer-events: none;
+  }
+
+  /* Etiqueta decorativa sobre imagen */
+  .recipe-tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: var(--oro);
+    color: var(--cafe);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .recipe-title-area {
+    padding: 16px 24px 12px;
+    background: var(--crema);
+    border-bottom: 2px solid var(--crema-dark);
+  }
+
+  .recipe-number-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--terracota);
+    margin-bottom: 4px;
+  }
+
+  .recipe-title-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 900;
+    color: var(--terracota-dark);
+    line-height: 1.1;
+  }
+
+  .ingredients-section {
+    flex: 1;
+    padding: 14px 24px 16px;
+    overflow-y: auto;
+  }
+
+  .section-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--oro);
+    background: var(--terracota-dark);
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+
+  .ingredients-list {
+    list-style: none;
+    columns: 2;
+    column-gap: 12px;
+  }
+
+  .ingredients-list li {
+    font-size: 11.5px;
+    color: var(--text-dark);
+    padding: 3px 0 3px 16px;
+    position: relative;
+    break-inside: avoid;
+    border-bottom: 1px dotted rgba(74,44,10,0.15);
+    line-height: 1.4;
+  }
+
+  .ingredients-list li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: var(--terracota);
+    font-size: 7px;
+    top: 5px;
+  }
+
+  /* ===== PÁGINA DERECHA (preparación) ===== */
+  .recipe-right {
+    background: var(--crema);
+    padding: 28px 26px 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Motivo decorativo de fondo */
+  .recipe-right::before {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    right: -40px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 40px solid rgba(196,98,45,0.06);
+    pointer-events: none;
+  }
+
+  .recipe-right::after {
+    content: '';
+    position: absolute;
+    top: 60px;
+    left: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 25px solid rgba(212,168,67,0.08);
+    pointer-events: none;
+  }
+
+  .prep-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--terracota-dark);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--crema-dark);
+  }
+
+  .steps-list {
+    list-style: none;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .steps-list li {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-dark);
+  }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    background: var(--terracota);
+    color: var(--crema);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  /* Nota al pie */
+  .recipe-note {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, rgba(212,168,67,0.12), rgba(196,98,45,0.08));
+    border-left: 3px solid var(--oro);
+    border-radius: 0 4px 4px 0;
+    font-size: 11px;
+    font-style: italic;
+    color: var(--cafe-light);
+  }
+
+  /* ===== BOTONES DE NAVEGACIÓN ===== */
+  .nav-btn {
+    position: absolute;
+    z-index: 20;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-home {
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--terracota);
+    color: var(--crema);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 7px 18px;
+    border-radius: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  }
+  .btn-home:hover { background: var(--terracota-dark); transform: translateX(-50%) translateY(-1px); }
+
+  .btn-arrow-left {
+    bottom: 12px;
+    left: 14px;
+    width: 44px;
+    height: 44px;
+    background: var(--terracota);
+    color: var(--crema);
+    border-radius: 50%;
+    font-size: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  }
+  .btn-arrow-left:hover { background: var(--terracota-dark); transform: translateX(-2px); }
+
+  .btn-arrow-right {
+    bottom: 12px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
+    background: var(--terracota);
+    color: var(--crema);
+    border-radius: 50%;
+    font-size: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  }
+  .btn-arrow-right:hover { background: var(--terracota-dark); transform: translateX(2px); }
+
+  .btn-play {
+    background: var(--verde);
+    color: var(--crema);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+  }
+  .btn-play:hover { background: var(--verde-light); transform: scale(1.1); }
+  .btn-play.playing { background: var(--rojo); animation: pulse 1s infinite; }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 3px 10px rgba(0,0,0,0.3); }
+    50% { box-shadow: 0 3px 20px rgba(155,27,27,0.5); }
+  }
+
+  /* Botones index nav */
+  .index-nav-right {
+    bottom: 12px;
+    right: 14px;
+  }
+  
+  .btn-start-read {
+    position: absolute;
+    bottom: 12px;
+    right: 50%;
+    transform: translateX(50%);
+    background: var(--verde);
+    color: var(--crema);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    transition: all 0.2s;
+  }
+  .btn-start-read:hover { background: var(--verde-light); }
+
+  /* ===== DECORACIONES DE PÁGINA ===== */
+  .page-corner-ornament {
+    position: absolute;
+    font-size: 32px;
+    color: var(--terracota);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .pco-tr { top: 8px; right: 8px; }
+  .pco-bl { bottom: 40px; left: 8px; transform: scale(-1); }
+
+  /* Número de página */
+  .page-num {
+    position: absolute;
+    bottom: 12px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 11px;
+    color: var(--cafe-light);
+    opacity: 0.6;
+  }
+  .page-num-left { left: 14px; }
+  .page-num-right { right: 14px; }
+
+  /* ===== PORTADA DERECHA ===== */
+  #cover .page-right {
+    background: var(--crema-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 20px;
+    position: relative;
+  }
+
+  #cover .page-right::before {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border: 1px solid rgba(196,98,45,0.2);
+    pointer-events: none;
+  }
+
+  .cover-right-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-mid);
+    text-align: center;
+  }
+
+  .cover-right-emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 12px;
+    width: 100%;
+  }
+
+  .cover-emoji-item {
+    text-align: center;
+    padding: 12px 8px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+  .cover-emoji-item:hover { transform: translateY(-2px); }
+
+  .cover-emoji-item .em { font-size: 28px; }
+  .cover-emoji-item .nm {
+    font-size: 8.5px;
+    font-family: 'Josefin Sans', sans-serif;
+    color: var(--text-mid);
+    margin-top: 4px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== SCROLLBAR STYLING ===== */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: rgba(74,44,10,0.1); }
+  ::-webkit-scrollbar-thumb { background: var(--terracota); border-radius: 2px; }
+
+  /* ===== TRANSITION ===== */
+  .spread { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* ===== BORDER DECORATION ===== */
+  .border-deco {
+    position: absolute;
+    inset: 6px;
+    border: 1px solid rgba(196,98,45,0.12);
+    pointer-events: none;
+    border-radius: 4px;
+  }
+
+  /* Motivo Otomí decorativo */
+  .otomi-border {
+    position: absolute;
+    left: 0; right: 0;
+    height: 8px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--terracota) 0px, var(--terracota) 10px,
+      var(--oro) 10px, var(--oro) 20px,
+      var(--verde) 20px, var(--verde) 30px,
+      var(--terracota-dark) 30px, var(--terracota-dark) 40px
+    );
+  }
+  .otomi-top { top: 0; }
+  .otomi-bottom { bottom: 0; }
+
+  /* Badge portada entrada */
+  .cover-enter-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    background: var(--oro);
+    color: var(--cafe);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 10px 28px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+  }
+  .cover-enter-btn:hover { background: var(--oro-light); transform: translateX(50%) translateY(-2px); }
+
+  /* Voice reading indicator */
+  .voice-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--verde);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  }
+  .voice-indicator.active { display: block; animation: fadeIn 0.3s; }
+</style>
+</head>
+<body>
+
+<div id="magazine">
+
+  <!-- ===== PORTADA ===== -->
+  <div class="spread active" id="cover">
+    <div class="page page-left">
+      <div class="otomi-border otomi-top"></div>
+      <span class="cover-flowers tl">🌺</span>
+      <span class="cover-flowers tr">🌺</span>
+      <span class="cover-flowers bl">🌺</span>
+      <span class="cover-flowers br">🌺</span>
+      <div class="cover-ornament"></div>
+      <div class="cover-divider"></div>
+      <h1 class="cover-title">Recetario<br>Familiar<br>Mexicano</h1>
+      <div class="cover-divider"></div>
+      <p class="cover-subtitle">Sabores de casa · Tradición</p>
+      <p class="cover-count">16 recetas con amor</p>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right">
+      <div class="otomi-border otomi-top"></div>
+      <div class="border-deco"></div>
+      <p class="cover-right-title">Una colección de<br>recetas entrañables</p>
+      <div class="cover-right-emoji-grid">
+        <div class="cover-emoji-item"><div class="em">🍬</div><div class="nm">Gomitas</div></div>
+        <div class="cover-emoji-item"><div class="em">🥩</div><div class="nm">Pastel de Carne</div></div>
+        <div class="cover-emoji-item"><div class="em">🫓</div><div class="nm">Buñuelos</div></div>
+        <div class="cover-emoji-item"><div class="em">🌮</div><div class="nm">Ench. Mineras</div></div>
+        <div class="cover-emoji-item"><div class="em">🍗</div><div class="nm">Pollo Enchilado</div></div>
+        <div class="cover-emoji-item"><div class="em">🍰</div><div class="nm">Pastel Japonés</div></div>
+        <div class="cover-emoji-item"><div class="em">🌯</div><div class="nm">Ench. Suizas</div></div>
+        <div class="cover-emoji-item"><div class="em">🥣</div><div class="nm">Sopa Tepozteca</div></div>
+        <div class="cover-emoji-item"><div class="em">🍪</div><div class="nm">Pastisetas</div></div>
+        <div class="cover-emoji-item"><div class="em">🎂</div><div class="nm">Pastel Imposible</div></div>
+        <div class="cover-emoji-item"><div class="em">🥞</div><div class="nm">Crepas</div></div>
+        <div class="cover-emoji-item"><div class="em">🍊</div><div class="nm">Pastel Naranja</div></div>
+        <div class="cover-emoji-item"><div class="em">🍞</div><div class="nm">Pan Sorpresa</div></div>
+        <div class="cover-emoji-item"><div class="em">🦃</div><div class="nm">Pavo Navideño</div></div>
+        <div class="cover-emoji-item"><div class="em">🥧</div><div class="nm">Pay de Queso</div></div>
+        <div class="cover-emoji-item"><div class="em">🍽️</div><div class="nm">Pollo Mostaza</div></div>
+      </div>
+      <button class="cover-enter-btn" onclick="showSpread('index-spread')">Ver Recetario →</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- ===== ÍNDICE ===== -->
+  <div class="spread" id="index-spread">
+    <div class="page page-left" style="padding:28px 24px; background:var(--crema-dark);">
+      <div class="otomi-border otomi-top"></div>
+      <div class="index-header">✦ Índice ✦</div>
+      <div class="index-grid">
+        <button class="index-btn" onclick="goToRecipe(0)">
+          <span class="index-btn-num">Receta 01</span>
+          <span class="index-btn-name">Gomitas</span>
+          <span class="index-btn-emoji">🍬</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(1)">
+          <span class="index-btn-num">Receta 02</span>
+          <span class="index-btn-name">Pastel de Carne</span>
+          <span class="index-btn-emoji">🥩</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(2)">
+          <span class="index-btn-num">Receta 03</span>
+          <span class="index-btn-name">Buñuelos</span>
+          <span class="index-btn-emoji">🫓</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(3)">
+          <span class="index-btn-num">Receta 04</span>
+          <span class="index-btn-name">Enchiladas Mineras</span>
+          <span class="index-btn-emoji">🌮</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(4)">
+          <span class="index-btn-num">Receta 05</span>
+          <span class="index-btn-name">Pollo Enchilado</span>
+          <span class="index-btn-emoji">🍗</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(5)">
+          <span class="index-btn-num">Receta 06</span>
+          <span class="index-btn-name">Pastel de Queso Japonés</span>
+          <span class="index-btn-emoji">🍰</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(6)">
+          <span class="index-btn-num">Receta 07</span>
+          <span class="index-btn-name">Enchiladas Suizas</span>
+          <span class="index-btn-emoji">🌯</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(7)">
+          <span class="index-btn-num">Receta 08</span>
+          <span class="index-btn-name">Sopa Tepozteca</span>
+          <span class="index-btn-emoji">🥣</span>
+        </button>
+      </div>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right" style="padding:28px 24px; background:var(--crema-dark);">
+      <div class="otomi-border otomi-top"></div>
+      <div class="index-header">✦ Índice ✦</div>
+      <div class="index-grid">
+        <button class="index-btn" onclick="goToRecipe(8)">
+          <span class="index-btn-num">Receta 09</span>
+          <span class="index-btn-name">Pastisetas</span>
+          <span class="index-btn-emoji">🍪</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(9)">
+          <span class="index-btn-num">Receta 10</span>
+          <span class="index-btn-name">Pastel Imposible</span>
+          <span class="index-btn-emoji">🎂</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(10)">
+          <span class="index-btn-num">Receta 11</span>
+          <span class="index-btn-name">Crepas</span>
+          <span class="index-btn-emoji">🥞</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(11)">
+          <span class="index-btn-num">Receta 12</span>
+          <span class="index-btn-name">Pastel de Naranja</span>
+          <span class="index-btn-emoji">🍊</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(12)">
+          <span class="index-btn-num">Receta 13</span>
+          <span class="index-btn-name">Pan Sorpresa</span>
+          <span class="index-btn-emoji">🍞</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(13)">
+          <span class="index-btn-num">Receta 14</span>
+          <span class="index-btn-name">Pavo Navideño</span>
+          <span class="index-btn-emoji">🦃</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(14)">
+          <span class="index-btn-num">Receta 15</span>
+          <span class="index-btn-name">Pay de Queso</span>
+          <span class="index-btn-emoji">🥧</span>
+        </button>
+        <button class="index-btn" onclick="goToRecipe(15)">
+          <span class="index-btn-num">Receta 16</span>
+          <span class="index-btn-name">Pollo a la Mostaza</span>
+          <span class="index-btn-emoji">🍽️</span>
+        </button>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="showSpread('cover')" title="Portada">◀</button>
+      <button class="nav-btn btn-arrow-right" onclick="goToRecipe(0)" title="Primera receta">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- ===== RECETAS ===== -->
+
+  <!-- R1: GOMITAS -->
+  <div class="spread" id="recipe-0">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#e8a87c,#d4606a,#9b2c5e);">
+        <div class="recipe-tag">Dulces · 1 porción</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🍬</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 01</div>
+        <h2 class="recipe-title-main">Gomitas</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>37 g de grenetina</li>
+          <li>250 ml de agua</li>
+          <li>Ácido cítrico al gusto</li>
+          <li>Esencia de sabor</li>
+          <li>Colorante artificial</li>
+          <li>Aceite (para engrasar)</li>
+          <li>100 g azúcar refinada</li>
+          <li>40 ml miel de maíz (Karo)</li>
+          <li>Moldes</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(0)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(0)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Disolver a fuego lento los 100 g de azúcar en 150 ml de agua, verter lentamente.</span></li>
+        <li><span class="step-num">2</span><span>Cuando se acabe, agregar la miel Karo y mezclar bien.</span></li>
+        <li><span class="step-num">3</span><span>Hidratar la grenetina con 100 ml de agua. Mezclar hasta que no haya grumos.</span></li>
+        <li><span class="step-num">4</span><span>Agregar la grenetina a la mezcla de azúcar y miel. Unir bien.</span></li>
+        <li><span class="step-num">5</span><span>Añadir el colorante, esencia de sabor y ácido cítrico al gusto.</span></li>
+        <li><span class="step-num">6</span><span>Engrasar los moldes con aceite y verter la mezcla.</span></li>
+        <li><span class="step-num">7</span><span>Refrigerar hasta que cuajen. Desmoldar y disfrutar.</span></li>
+      </ol>
+      <div class="recipe-note">💡 Puedes usar distintos sabores y colores para hacer gomitas variadas.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(0)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R2: PASTEL DE CARNE -->
+  <div class="spread" id="recipe-1">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#8B4513,#A0522D,#CD853F);">
+        <div class="recipe-tag">Platillo Principal</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🥩</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 02</div>
+        <h2 class="recipe-title-main">Pastel de Carne</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>Carne molida al gusto</li>
+          <li>Ajo</li>
+          <li>Cebolla</li>
+          <li>Zanahoria</li>
+          <li>Galletas (migajas)</li>
+          <li>Salsa inglesa</li>
+          <li>Sal y pimienta</li>
+          <li>Apio</li>
+          <li>Cilantro</li>
+          <li>Papas</li>
+          <li>Crema</li>
+          <li>Chile morrón</li>
+          <li>Queso manchego rallado</li>
+          <li>Papel encerado</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(1)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(1)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Sofreír el ajo hasta que esté doradito, agregar la cebolla.</span></li>
+        <li><span class="step-num">2</span><span>Agregar la carne, zanahoria, galletas, salsa inglesa, sal, apio y cilantro. Mezclar perfectamente.</span></li>
+        <li><span class="step-num">3</span><span>Colocar papel encerado engrasado en la base del molde. Verter la pasta de carne.</span></li>
+        <li><span class="step-num">4</span><span>Elaborar el puré: mezclar la crema y la papa cocida.</span></li>
+        <li><span class="step-num">5</span><span>Cortar tiras de chile morrón para decorar el puré.</span></li>
+        <li><span class="step-num">6</span><span>Colocar el puré sobre la mezcla de carne y agregar queso manchego rallado.</span></li>
+        <li><span class="step-num">7</span><span>Hornear a 180°C por 30 minutos.</span></li>
+      </ol>
+      <div class="recipe-note">⏱️ Temperatura 180°C · 30 minutos de horneado.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(1)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R3: BUÑUELOS -->
+  <div class="spread" id="recipe-2">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#D4A843,#C4622D,#8B3E1A);">
+        <div class="recipe-tag">Postres · 40 pzas aprox.</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🫓</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 03</div>
+        <h2 class="recipe-title-main">Buñuelos</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes (para ~40 pzas)</div>
+        <ul class="ingredients-list">
+          <li>1½ taza harina de trigo</li>
+          <li>¼ cdita sal</li>
+          <li>½ cdita royal (polvo para hornear)</li>
+          <li>1 cda azúcar</li>
+          <li>1 cdita vainilla</li>
+          <li>2 huevos</li>
+          <li>¼ taza agua</li>
+          <li>2 cdas mantequilla derretida</li>
+          <li>1 taza leche</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(2)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(2)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Mezclar en un recipiente la harina, sal, royal y azúcar.</span></li>
+        <li><span class="step-num">2</span><span>Agregar los huevos uno a uno, mezclando bien.</span></li>
+        <li><span class="step-num">3</span><span>Incorporar la leche, agua, mantequilla derretida y vainilla.</span></li>
+        <li><span class="step-num">4</span><span>Obtener una masa suave y homogénea. Reposar 20 min.</span></li>
+        <li><span class="step-num">5</span><span>Formar bolitas y extender con rodillo hasta hacer discos delgados.</span></li>
+        <li><span class="step-num">6</span><span>Freír en aceite caliente hasta que estén dorados y crujientes.</span></li>
+        <li><span class="step-num">7</span><span>Escurrir y espolvorear con azúcar y canela.</span></li>
+      </ol>
+      <div class="recipe-note">💡 Cantidad promedio: 40 piezas de 10 cm cada una.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(2)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R4: ENCHILADAS MINERAS -->
+  <div class="spread" id="recipe-3">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#8B0000,#C4622D,#2D5A27);">
+        <div class="recipe-tag">Guanajuato · Tradición</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🌮</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 04</div>
+        <h2 class="recipe-title-main">Enchiladas Mineras</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>2 papas cocidas en cubos</li>
+          <li>2 zanahorias en cubos</li>
+          <li>2 chiles guajillo</li>
+          <li>¼ cebolla</li>
+          <li>1 cda vinagre</li>
+          <li>2 dientes de ajo</li>
+          <li>1 cda sal</li>
+          <li>½ cda orégano</li>
+          <li>Agua 2 tazas</li>
+          <li>4 cdas aceite</li>
+          <li>1 taza queso</li>
+          <li>½ cebolla picada fina</li>
+          <li>Lechuga</li>
+          <li>Tortillas</li>
+          <li>Crema</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(3)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(3)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Remojar los chiles en agua caliente con el vinagre.</span></li>
+        <li><span class="step-num">2</span><span>Licuar chiles, sal, orégano, cebolla, ajo con el agua de los chiles. Colar.</span></li>
+        <li><span class="step-num">3</span><span>Freír la salsa en una sartén con aceite.</span></li>
+        <li><span class="step-num">4</span><span>En otro sartén freír cebolla, papas, zanahorias y sal.</span></li>
+        <li><span class="step-num">5</span><span>Freír las tortillas y pasarlas por la salsa.</span></li>
+        <li><span class="step-num">6</span><span>Rellenar con la verdura y queso.</span></li>
+        <li><span class="step-num">7</span><span>Decorar con lechuga, crema, más verdura y queso encima.</span></li>
+      </ol>
+      <div class="recipe-note">🌶️ Receta tradicional del estado de Guanajuato.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(3)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R5: POLLO ENCHILADO -->
+  <div class="spread" id="recipe-4">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#8B0000,#C4622D,#A0522D);">
+        <div class="recipe-tag">Platillo Principal</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🍗</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 05</div>
+        <h2 class="recipe-title-main">Pollo Enchilado</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>1 pollo en piezas</li>
+          <li>12 pzas chile guajillo</li>
+          <li>2 jitomates</li>
+          <li>1 diente de ajo</li>
+          <li>¼ cebolla blanca</li>
+          <li>½ cda orégano seco</li>
+          <li>Sal al gusto</li>
+          <li>Pimienta negra molida</li>
+          <li>Aceite de oliva al gusto</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(4)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(4)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Abrir los chiles y retirar las semillas. Freír con un poco de aceite hasta tostarlos sin quemarlos.</span></li>
+        <li><span class="step-num">2</span><span>Moler en la licuadora con los jitomates, ajo, cebolla y orégano. Colar y apartar.</span></li>
+        <li><span class="step-num">3</span><span>Salpimentar las piezas de pollo. Sellarlas en un sartén hondo con poco aceite.</span></li>
+        <li><span class="step-num">4</span><span>Agregar la salsa, dejar que suelte el hervor.</span></li>
+        <li><span class="step-num">5</span><span>Cocer tapado a fuego bajo por 20 minutos.</span></li>
+      </ol>
+      <div class="recipe-note">⏱️ Cocción tapada a fuego bajo · 20 minutos.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(4)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R6: PASTEL DE QUESO JAPONÉS -->
+  <div class="spread" id="recipe-5">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#F5CBA7,#E8A87C,#D4906A);">
+        <div class="recipe-tag">Repostería · Japonés</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🍰</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 06</div>
+        <h2 class="recipe-title-main">Pastel de Queso Japonés</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>4 huevos</li>
+          <li>200 g queso crema</li>
+          <li>200 ml leche</li>
+          <li>200 g azúcar (mín. 80 g)</li>
+          <li>50 g harina de trigo</li>
+          <li>Jugo y ralladura de 1 limón</li>
+          <li>Esencia de vainilla</li>
+        </ul>
+        <br>
+        <div class="section-label">Temperatura</div>
+        <ul class="ingredients-list">
+          <li>Precalentar a 140°C</li>
+          <li>Hornear a 100°C</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(5)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(5)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Batir el queso crema hasta obtener consistencia cremosa. Agregar la leche y mezclar.</span></li>
+        <li><span class="step-num">2</span><span>Separar claras y yemas. Integrar las yemas a la mezcla.</span></li>
+        <li><span class="step-num">3</span><span>Agregar jugo y ralladura de limón. Añadir harina cernida. Agregar vainilla.</span></li>
+        <li><span class="step-num">4</span><span>Montar claras a punto de nieve. Cuando estén espumosas, agregar la mitad del azúcar. Luego el resto hasta tener merengue listo.</span></li>
+        <li><span class="step-num">5</span><span>Integrar el merengue a la mezcla con movimientos envolventes.</span></li>
+        <li><span class="step-num">6</span><span>Preparar molde con papel para hornear (paredes altas).</span></li>
+        <li><span class="step-num">7</span><span>Meter al horno a baño María ~1 hora. Apagar el horno, esperar 20 min, entreabrir puerta 20 min más.</span></li>
+        <li><span class="step-num">8</span><span>Sacar y dejar enfriar completamente antes de desmoldar.</span></li>
+      </ol>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(5)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R7: ENCHILADAS SUIZAS -->
+  <div class="spread" id="recipe-6">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#2D5A27,#4A7C3F,#C4622D);">
+        <div class="recipe-tag">Clásico Mexicano</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🌯</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 07</div>
+        <h2 class="recipe-title-main">Enchiladas Suizas</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>Tortillas</li>
+          <li>Pollo desmenuzado</li>
+          <li>Chiles verdes</li>
+          <li>Tomates</li>
+          <li>Cebollita</li>
+          <li>Crema</li>
+          <li>Queso rallado</li>
+          <li>Salsa verde</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(6)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(6)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Preparar la salsa verde: licuar chiles, tomates, cebollita y especias.</span></li>
+        <li><span class="step-num">2</span><span>Freír la salsa y dejar reducir.</span></li>
+        <li><span class="step-num">3</span><span>Calentar las tortillas, rellenar con pollo deshebrado.</span></li>
+        <li><span class="step-num">4</span><span>Pasar las tortillas enrolladas por la salsa, acomodar en refractario.</span></li>
+        <li><span class="step-num">5</span><span>Cubrir con crema, salsa y queso rallado.</span></li>
+        <li><span class="step-num">6</span><span>Hornear a 180°C durante 15 minutos hasta gratinar el queso.</span></li>
+      </ol>
+      <div class="recipe-note">🧀 Gratinar hasta que el queso esté dorado y burbujeante.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(6)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R8: SOPA TEPOZTECA -->
+  <div class="spread" id="recipe-7">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#2D5A27,#A0C878,#D4A843);">
+        <div class="recipe-tag">Morelos · 4-6 porciones</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🥣</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 08</div>
+        <h2 class="recipe-title-main">Sopa Tepozteca</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes (4-6 porciones)</div>
+        <ul class="ingredients-list">
+          <li>1 manojo flores de calabaza</li>
+          <li>12 champiñones partidos</li>
+          <li>½ cebolla fileteada</li>
+          <li>2 chiles verdes rebanados</li>
+          <li>4 elotes en trozos, cocidos</li>
+          <li>1½ litros caldo de res</li>
+          <li>¼ barrita mantequilla</li>
+          <li>Sal al gusto</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(7)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(7)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Calentar la mantequilla en una sartén a fuego bajo.</span></li>
+        <li><span class="step-num">2</span><span>Cuando se derrita, añadir las flores de calabaza, champiñones, cebolla y chiles.</span></li>
+        <li><span class="step-num">3</span><span>Sazonar y cocinar hasta que los champiñones estén cocidos.</span></li>
+        <li><span class="step-num">4</span><span>Verter el caldo de res e incorporar los trozos de elote.</span></li>
+        <li><span class="step-num">5</span><span>Colocar la tapa y cocinar a fuego medio hasta que suelte el hervor.</span></li>
+        <li><span class="step-num">6</span><span>Retirar de la estufa y servir las porciones.</span></li>
+      </ol>
+      <div class="recipe-note">💡 Para variar el sabor, puedes cambiar el caldo de res por caldo de pollo.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(7)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R9: PASTISETAS -->
+  <div class="spread" id="recipe-8">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#F5CBA7,#D4A843,#C4622D);">
+        <div class="recipe-tag">Galletas · ~45 piezas</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🍪</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 09</div>
+        <h2 class="recipe-title-main">Pastisetas</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes (~45 galletas)</div>
+        <ul class="ingredients-list">
+          <li>250 g mantequilla</li>
+          <li>1 huevo + 1 yema</li>
+          <li>100 g azúcar (o 125 g)</li>
+          <li>300 g harina de trigo</li>
+          <li>1 cda maicena</li>
+          <li>Vainilla al gusto</li>
+        </ul>
+        <br>
+        <div class="section-label">Temperatura</div>
+        <ul class="ingredients-list">
+          <li>Precalentar a 200°C</li>
+          <li>Hornear 15-20 min a 200°C</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(8)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(8)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Acremar la mantequilla con el huevo y azúcar hasta que cambie de color y esté esponjoso. Debe hacer picos la mezcla.</span></li>
+        <li><span class="step-num">2</span><span>Agregar los ingredientes secos (harina, maicena, vainilla) con movimiento envolvente hasta integrar.</span></li>
+        <li><span class="step-num">3</span><span>Poner todo en una manga pastelera con boquilla de estrella.</span></li>
+        <li><span class="step-num">4</span><span>Formar las pastisetas en una charola y hornear.</span></li>
+        <li><span class="step-num">5</span><span>Despegar cuando estén calientes y dejar enfriar.</span></li>
+      </ol>
+      <div class="recipe-note">⭐ Usar boquilla de estrella para el diseño tradicional.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(8)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R10: PASTEL IMPOSIBLE -->
+  <div class="spread" id="recipe-9">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#3B1F0A,#8B3E1A,#C4622D);">
+        <div class="recipe-tag">Chocoflan · 14 porciones</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🎂</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 10</div>
+        <h2 class="recipe-title-main">Pastel Imposible</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Pastel (Tres Estrellas)</div>
+        <ul class="ingredients-list">
+          <li>1¾ tazas harina preparada choco</li>
+          <li>3 huevos grandes</li>
+          <li>⅔ taza aceite (80 ml)</li>
+          <li>2 cdas mantequilla</li>
+          <li>2 cdas harina (para molde)</li>
+          <li>Agua 300 ml</li>
+          <li>1 cajeta</li>
+        </ul>
+        <br>
+        <div class="section-label">Flan</div>
+        <ul class="ingredients-list">
+          <li>1 lata leche condensada</li>
+          <li>1 lata leche evaporada</li>
+          <li>6 huevos</li>
+          <li>1 cdita esencia de vainilla</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(9)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(9)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Precalentar el horno a 200°C. Engrasar y enharinar un molde de rosca grande (24-26 cm). Cubrir el fondo con la cajeta.</span></li>
+        <li><span class="step-num">2</span><span>Mezclar con batidora la harina Tres Estrellas con el agua y el aceite. Agregar los huevos uno a uno. Añadir la vainilla y reservar.</span></li>
+        <li><span class="step-num">3</span><span>Licuar las leches, los huevos del flan y la vainilla.</span></li>
+        <li><span class="step-num">4</span><span>Vaciar en el molde la mezcla del pastel. Encima verter poco a poco la mezcla del flan.</span></li>
+        <li><span class="step-num">5</span><span>Tapar el molde con papel aluminio (sellado). Hornear a baño María de 1½ a 2 horas.</span></li>
+        <li><span class="step-num">6</span><span>Retirar del horno, dejar enfriar completamente, desmoldar y servir.</span></li>
+      </ol>
+      <div class="recipe-note">✨ La magia: el pastel sube y el flan baja. ¡Se invierten solos!</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(9)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R11: CREPAS -->
+  <div class="spread" id="recipe-10">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#F5DEB3,#DEB887,#D2691E);">
+        <div class="recipe-tag">Postres · Francés</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🥞</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 11</div>
+        <h2 class="recipe-title-main">Crepas</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>1 taza de harina</li>
+          <li>1¼ taza de leche</li>
+          <li>2 huevos</li>
+          <li>2 cdas azúcar</li>
+          <li>2 cdas mantequilla</li>
+          <li>1 cda vainilla</li>
+          <li>1 pizca de sal</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(10)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(10)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Agregar todos los ingredientes secos (harina, azúcar, sal) y mezclar.</span></li>
+        <li><span class="step-num">2</span><span>Agregar el huevo de uno en uno y batir bien.</span></li>
+        <li><span class="step-num">3</span><span>Incorporar el resto de los ingredientes (leche, mantequilla, vainilla) y terminar de batir.</span></li>
+        <li><span class="step-num">4</span><span>Dejar reposar la mezcla de 20 a 40 minutos en el refrigerador.</span></li>
+        <li><span class="step-num">5</span><span>Calentar una sartén a fuego medio con un poco de mantequilla.</span></li>
+        <li><span class="step-num">6</span><span>Verter una porción de mezcla y extender formando un círculo delgado. Cocinar ~1 min por lado.</span></li>
+      </ol>
+      <div class="recipe-note">💡 Reposo de la mezcla: 20 a 40 minutos para mejor textura.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(10)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R12: PASTEL DE NARANJA -->
+  <div class="spread" id="recipe-11">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#FF8C00,#FFA500,#FFD700);">
+        <div class="recipe-tag">Repostería Clásica</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🍊</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 12</div>
+        <h2 class="recipe-title-main">Pastel de Naranja</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>3 tazas de harina</li>
+          <li>3 cditas de royal</li>
+          <li>250 g mantequilla</li>
+          <li>1½ taza de azúcar</li>
+          <li>6 huevos</li>
+          <li>2 cditas de vainilla</li>
+          <li>3 naranjas</li>
+          <li>1 limón</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(11)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(11)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Acremar la mantequilla con el azúcar y la vainilla.</span></li>
+        <li><span class="step-num">2</span><span>Raspar las naranjas y agregar la ralladura a la mezcla.</span></li>
+        <li><span class="step-num">3</span><span>Agregar los huevos uno a uno.</span></li>
+        <li><span class="step-num">4</span><span>Cernir la harina con el royal e ir incorporando a la pasta junto con el jugo de las naranjas.</span></li>
+        <li><span class="step-num">5</span><span>Engrasar la budinera y vaciar la pasta.</span></li>
+        <li><span class="step-num">6</span><span>Cocinar a fuego fuerte 4 minutos, luego bajar a lento durante 30 minutos.</span></li>
+        <li><span class="step-num">7</span><span>Probar con palillo al centro para verificar cocción.</span></li>
+      </ol>
+      <div class="recipe-note">🍊 El jugo de las naranjas se integra junto con la harina para perfumar la pasta.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(11)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R13: PAN SORPRESA -->
+  <div class="spread" id="recipe-12">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#DEB887,#8B4513,#D4A843);">
+        <div class="recipe-tag">Aperitivo · Para compartir</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🍞</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 13</div>
+        <h2 class="recipe-title-main">Pan Sorpresa</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>Pan redondo (hogaza)</li>
+          <li>Queso manchego o mozzarella</li>
+          <li>Jamón en tiras</li>
+          <li>Cebolla picada</li>
+          <li>Aceite de oliva</li>
+          <li>Ajo, orégano, perejil</li>
+          <li>Aceitunas (opcional)</li>
+          <li>Sal y pimienta</li>
+          <li>Mantequilla</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(12)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(12)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Cortar el pan en cuadritos sin llegar a la base.</span></li>
+        <li><span class="step-num">2</span><span>Abrir el pan y agregar aceite de oliva y mantequilla en las aberturas.</span></li>
+        <li><span class="step-num">3</span><span>Insertar el jamón y cebolla en las aberturas.</span></li>
+        <li><span class="step-num">4</span><span>Sazonar con sal, pimienta, ajo, orégano y perejil.</span></li>
+        <li><span class="step-num">5</span><span>Agregar queso hasta cubrir. Añadir más aceite encima.</span></li>
+        <li><span class="step-num">6</span><span>Envolver en papel aluminio y llevar al horno.</span></li>
+        <li><span class="step-num">7</span><span>Sacar y destapar el pan para gratinar el queso ~10 minutos.</span></li>
+      </ol>
+      <div class="recipe-note">🧀 Gratinar destapado 10 minutos hasta dorar el queso.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(12)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R14: PAVO NAVIDEÑO -->
+  <div class="spread" id="recipe-13">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#8B0000,#C4622D,#D4A843);">
+        <div class="recipe-tag">Navidad · 20 porciones · 8 hrs</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🦃</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 14</div>
+        <h2 class="recipe-title-main">Pavo Navideño</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes (20 porciones)</div>
+        <ul class="ingredients-list">
+          <li>1 pavo de 8-10 kg</li>
+          <li>1 botella de sidra</li>
+          <li>1 kg carne de cerdo molida</li>
+          <li>100 g piñones</li>
+          <li>100 g pasas</li>
+          <li>4 manzanas</li>
+          <li>3 barras mantequilla</li>
+          <li>2 cebollas</li>
+          <li>¼ l aceite de oliva</li>
+          <li>1 cda sal</li>
+          <li>1 cda pimienta negra</li>
+          <li>3 dientes de ajo</li>
+          <li>Jeringa (para inyectar)</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(13)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(13)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Inyectar al pavo la sidra en pechuga, piernas y muslos.</span></li>
+        <li><span class="step-num">2</span><span>Sofreír el ajo y la cebolla finamente picados hasta que estén bien dorados.</span></li>
+        <li><span class="step-num">3</span><span>Agregar la carne de cerdo. Cuando esté cocida, añadir la fruta seca y el resto de la sidra.</span></li>
+        <li><span class="step-num">4</span><span>Rellenar el pavo con el guiso y las manzanas en trozos.</span></li>
+        <li><span class="step-num">5</span><span>Untar mantequilla, sal y pimienta a todo el pavo.</span></li>
+        <li><span class="step-num">6</span><span>Colocar en la pavera y reposar 3-4 horas.</span></li>
+        <li><span class="step-num">7</span><span>Hornear a 160°C hasta que se cocine completamente.</span></li>
+      </ol>
+      <div class="recipe-note">🎄 Dificultad: Media · Tiempo: ~8 horas. ¡La estrella de la Navidad!</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(13)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R15: PAY DE QUESO -->
+  <div class="spread" id="recipe-14">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#F5F5DC,#DEB887,#C4622D);">
+        <div class="recipe-tag">Repostería · Cheesecake</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🥧</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 15</div>
+        <h2 class="recipe-title-main">Pay de Queso</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>2 paq. galletas Marías</li>
+          <li>2 barras mantequilla (90 g c/u)</li>
+          <li>1 barra Philadelphia</li>
+          <li>1 lata leche condensada</li>
+          <li>1 lata leche evaporada</li>
+          <li>2 cditas vainilla</li>
+          <li>4 huevos</li>
+        </ul>
+        <br>
+        <div class="section-label">Temperatura</div>
+        <ul class="ingredients-list">
+          <li>Precalentar a 200°C</li>
+          <li>Hornear 180°C · 45 min</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(14)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(14)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Triturar las galletas hasta hacerlas polvo.</span></li>
+        <li><span class="step-num">2</span><span>Mezclar las galletas trituradas con la mantequilla derretida para hacer la costra del pay.</span></li>
+        <li><span class="step-num">3</span><span>Presionar la costra en el molde y refrigerar mientras se prepara el relleno.</span></li>
+        <li><span class="step-num">4</span><span>En la licuadora mezclar el Philadelphia, leche condensada, leche evaporada, vainilla y huevos.</span></li>
+        <li><span class="step-num">5</span><span>Verter el relleno sobre la costra de galleta.</span></li>
+        <li><span class="step-num">6</span><span>Hornear a 180°C durante 45 minutos.</span></li>
+        <li><span class="step-num">7</span><span>Dejar enfriar y refrigerar antes de servir.</span></li>
+      </ol>
+      <div class="recipe-note">🥧 Refrigerar mínimo 4 horas antes de servir para mejor textura.</div>
+      <button class="nav-btn btn-arrow-right" onclick="nextRecipe(14)">▶</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+  <!-- R16: POLLO A LA MOSTAZA -->
+  <div class="spread" id="recipe-15">
+    <div class="page page-left recipe-left">
+      <div class="otomi-border otomi-top"></div>
+      <div class="recipe-image-area" style="background: linear-gradient(135deg,#9B9B00,#D4A843,#C4622D);">
+        <div class="recipe-tag">Platillo Principal</div>
+        <div class="recipe-image-placeholder">
+          <div class="big-emoji">🍽️</div>
+          <div class="recipe-image-pattern"></div>
+        </div>
+      </div>
+      <div class="recipe-title-area">
+        <div class="recipe-number-label">Receta 16</div>
+        <h2 class="recipe-title-main">Pollo a la Mostaza</h2>
+      </div>
+      <div class="ingredients-section">
+        <div class="section-label">Ingredientes</div>
+        <ul class="ingredients-list">
+          <li>Pollo en piezas</li>
+          <li>Tocino en tiras</li>
+          <li>Champiñones</li>
+          <li>Crema</li>
+          <li>Mantequilla</li>
+          <li>Mostaza al gusto</li>
+          <li>Cebolla al gusto</li>
+        </ul>
+      </div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(15)">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="page page-right recipe-right">
+      <div class="otomi-border otomi-top"></div>
+      <button class="btn-play" onclick="readRecipe(15)" title="Escuchar receta">▶</button>
+      <p class="prep-title">Preparación</p>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span><span>Freír el tocino y sacarlo. Freír el pollo en crudo en la misma grasa.</span></li>
+        <li><span class="step-num">2</span><span>Regresar el tocino al sartén. Agregar los champiñones y la cebolla.</span></li>
+        <li><span class="step-num">3</span><span>Añadir la mantequilla, crema y un poco de mostaza.</span></li>
+        <li><span class="step-num">4</span><span>Dejar que suelte el hervor y que los champiñones estén suaves.</span></li>
+        <li><span class="step-num">5</span><span>Rectificar sazón y servir acompañado de arroz o papa.</span></li>
+      </ol>
+      <div class="recipe-note">🍄 La mostaza da un toque especial a la crema. ¡Ajusta al gusto!</div>
+      <button class="nav-btn btn-arrow-left" onclick="prevRecipe(15)" style="position:absolute;bottom:12px;left:14px;">◀</button>
+      <button class="nav-btn btn-home" onclick="showSpread('index-spread')" style="position:absolute;bottom:12px;right:50%;transform:translateX(50%);">🏠 Índice</button>
+      <div class="otomi-border otomi-bottom"></div>
+    </div>
+    <div class="spine"></div>
+  </div>
+
+</div>
+
+<!-- Voice indicator -->
+<div class="voice-indicator" id="voiceIndicator">🔊 Leyendo receta...</div>
+
+<script>
+  const TOTAL_RECIPES = 16;
+  let currentSpeech = null;
+  let isSpeaking = false;
+
+  const recipeTexts = [
+    // 0 Gomitas
+    `Gomitas. Ingredientes para 1 porción: 37 gramos de grenetina, 250 mililitros de agua, ácido cítrico al gusto, esencia de sabor, colorante artificial, aceite para engrasar, 100 gramos de azúcar refinada y 40 mililitros de miel de maíz Karo, y moldes. Preparación: Disolver a fuego lento los 100 gramos de azúcar en 150 mililitros de agua, verter lentamente. Cuando se acabe, agregar la miel Karo y mezclar. Hidratar la grenetina con 100 mililitros de agua, mezclar hasta que no haya grumos y adherir a la mezcla anterior. Añadir colorante, esencia y ácido cítrico al gusto. Engrasar los moldes con aceite y verter la mezcla. Refrigerar hasta que cuajen y desmoldar.`,
+    // 1 Pastel de Carne
+    `Pastel de Carne. Ingredientes: carne molida, ajo, cebolla, zanahoria, galletas, salsa inglesa, sal, pimienta, apio, cilantro, papas, crema, chile morrón, queso manchego rallado y papel encerado. Preparación: Sofreír el ajo hasta que esté doradito y agregar la cebolla. Agregar la carne, zanahoria, galletas, salsa inglesa, sal, apio y cilantro. Mezclar perfectamente. Colocar papel encerado engrasado en la base del molde y colocar la pasta. Elaborar el puré mezclando la crema y la papa. Cortar tiras de chile morrón para decorar el puré. Colocar el puré sobre la mezcla de carne y agregar queso manchego rallado. Hornear a 180 grados por 30 minutos.`,
+    // 2 Buñuelos
+    `Buñuelos. Ingredientes para aproximadamente 40 piezas de 10 centímetros: una y media taza de harina de trigo, un cuarto de cucharadita de sal, media cucharadita de royal, una cucharada de azúcar, una cucharadita de vainilla, 2 huevos, un cuarto de taza de agua, 2 cucharadas de mantequilla derretida y 1 taza de leche. Preparación: Mezclar todos los ingredientes secos. Agregar los huevos uno a uno. Incorporar leche, agua, mantequilla y vainilla. Obtener una masa suave y reposar 20 minutos. Formar bolitas, extender con rodillo hasta hacer discos delgados. Freír en aceite caliente hasta que estén dorados. Escurrir y espolvorear con azúcar y canela.`,
+    // 3 Enchiladas Mineras
+    `Enchiladas Mineras. Ingredientes: 2 papas cocidas en cubos, 2 zanahorias en cubos, 2 chiles guajillo, un cuarto de cebolla, 1 cucharada de vinagre, 2 dientes de ajo, 1 cucharada de sal, media cucharada de orégano, 2 tazas de agua, 4 cucharadas de aceite, 1 taza de queso, media cebolla picada fina, lechuga, tortillas y crema. Preparación: Remojar los chiles en agua caliente con el vinagre. Licuar chiles, sal, orégano, cebolla y ajo con el agua de los chiles. Colar. Freír la salsa. En otro sartén freír cebolla, papas, zanahorias y sal. Freír las tortillas y pasarlas por la salsa. Rellenar con la verdura y el queso. Decorar con lechuga, más verdura, queso y crema.`,
+    // 4 Pollo Enchilado
+    `Pollo Enchilado. Ingredientes: 1 pollo en piezas, 12 piezas de chile guajillo, 2 jitomates, 1 diente de ajo, un cuarto de cebolla blanca, media cucharada de orégano seco, sal al gusto, pimienta negra molida y aceite de oliva. Preparación: Abrir los chiles y retirar las semillas. Freír con un poco de aceite hasta tostarlos sin quemarlos. Moler en la licuadora con los jitomates, ajo, cebolla y orégano. Colar y apartar. Salpimentar las piezas de pollo. Sellarlas en un sartén hondo con poco aceite. Agregar la salsa y dejar que suelte el hervor. Cocer tapado a fuego bajo por 20 minutos.`,
+    // 5 Pastel de Queso Japonés
+    `Pastel de Queso Japonés. Ingredientes: 4 huevos, 200 gramos de queso crema, 200 mililitros de leche, 200 gramos de azúcar (mínimo 80 gramos), 50 gramos de harina de trigo, jugo y ralladura de un limón, y esencia de vainilla. Precalentar el horno a 140 grados y hornear a 100 grados. Preparación: Batir el queso hasta obtener consistencia cremosa, agregar la leche y mezclar. Separar claras y yemas. Integrar las yemas a la mezcla. Agregar jugo y ralladura de limón, añadir la harina cernida y la vainilla. Montar claras: cuando estén espumosas agregar la mitad del azúcar, al integrar añadir el resto hasta que el merengue esté listo. Integrar el merengue con movimientos envolventes. Preparar el molde con papel para hornear de paredes altas. Meter al horno a baño María aproximadamente una hora. Para que no se baje, apagar el horno, esperar 20 minutos, entreabrir la puerta y esperar 20 minutos más. Sacar y dejar enfriar completamente para desmoldar.`,
+    // 6 Enchiladas Suizas
+    `Enchiladas Suizas. Ingredientes: tortillas, pollo desmenuzado, chiles verdes, tomates, cebollita, crema, queso rallado y salsa verde. Preparación: Preparar la salsa verde licuando chiles, tomates, cebollita y especias. Freír la salsa y dejar reducir. Calentar las tortillas y rellenar con pollo deshebrado. Pasar las tortillas por la salsa y acomodar en refractario. Cubrir con crema, salsa y queso rallado. Hornear a 180 grados durante 15 minutos hasta gratinar el queso.`,
+    // 7 Sopa Tepozteca
+    `Sopa Tepozteca. Ingredientes para 4 a 6 porciones: 1 manojo de flores de calabaza, 12 champiñones partidos, media cebolla fileteada, 2 chiles verdes rebanados, 4 elotes partidos en trozos y cocidos, 1 litro y medio de caldo de res, un cuarto de barrita de mantequilla y sal al gusto. Preparación: Calentar la mantequilla en una sartén a fuego bajo. Cuando se derrita, añadir las flores de calabaza, los champiñones, la cebolla y los chiles. Sazonar y cocinar hasta que los champiñones estén cocidos. Verter el caldo de res e incorporar los trozos de elote. Colocar la tapa y cocinar a fuego medio hasta que suelte el hervor. Retirar de la estufa y servir las porciones. Para variar el sabor puedes cambiar el caldo de res por caldo de pollo.`,
+    // 8 Pastisetas
+    `Pastisetas. Ingredientes para aproximadamente 45 galletas: 250 gramos de mantequilla, 1 huevo más 1 yema, 100 gramos de azúcar o 125 gramos, 300 gramos de harina de trigo, 1 cucharada de maicena y vainilla al gusto. Precalentar el horno a 200 grados y hornear de 15 a 20 minutos. Preparación: Acremar la mantequilla con el huevo y azúcar hasta que cambie de color y esté esponjoso, debe hacer picos la mezcla. Agregar los ingredientes secos con movimiento envolvente hasta integrar. Poner todo en una manga pastelera con boquilla de estrella. Formar las pastisetas en una charola y hornear. Despegar cuando estén calientes y dejar enfriar.`,
+    // 9 Pastel Imposible
+    `Pastel Imposible, también conocido como Chocoflan. Ingredientes del pastel: 1 caja de harina Tres Estrellas para pastel de chocolate, 3 huevos grandes, dos tercios de taza de aceite, 2 cucharadas de mantequilla, 2 cucharadas de harina, 300 mililitros de agua y 1 cajeta. Para el flan: 1 lata de leche condensada, 1 lata de leche evaporada, 6 huevos y 1 cucharadita de esencia de vainilla. Preparación: Precalentar el horno a 200 grados. Engrasar y enharinar un molde de rosca grande. Cubrir el fondo con la cajeta. Mezclar la harina Tres Estrellas con el agua y el aceite. Agregar los huevos uno a uno y la vainilla. Licuar las leches con los huevos del flan y la vainilla. Vaciar en el molde la mezcla del pastel y encima verter poco a poco la mezcla del flan. Tapar con papel aluminio y hornear a baño María de 1 hora y media a 2 horas. Dejar enfriar completamente y desmoldar.`,
+    // 10 Crepas
+    `Crepas. Ingredientes: 1 taza de harina, 1 cuarto de taza de leche, 2 huevos, 2 cucharadas de azúcar, 2 cucharadas de mantequilla, 1 cucharada de vainilla y 1 pizca de sal. Preparación: Agregar todos los ingredientes secos (harina, azúcar, sal) y mezclar. Agregar el huevo de uno en uno y batir bien. Agregar el resto de los ingredientes (leche, mantequilla, vainilla) y terminar de batir. Dejar reposar la mezcla de 20 a 40 minutos en el refrigerador. Calentar una sartén a fuego medio con un poco de mantequilla. Verter una porción de mezcla y extender formando un círculo delgado. Cocinar aproximadamente 1 minuto por cada lado.`,
+    // 11 Pastel de Naranja
+    `Pastel de Naranja. Ingredientes: 3 tazas de harina, 3 cucharaditas de royal, 250 gramos de mantequilla, 1 y media taza de azúcar, 6 huevos, 2 cucharaditas de vainilla, 3 naranjas y 1 limón. Preparación: Acremar la mantequilla con el azúcar y la vainilla. Raspar las naranjas y agregar la ralladura. Agregar los huevos uno a uno. Cernir la harina con el royal e ir incorporando a la pasta junto con el jugo de las naranjas. Engrasar la budinera y vaciar la pasta. Cocinar a fuego fuerte 4 minutos, luego bajar a fuego lento durante 30 minutos. Se puede destapar para probar con palillo.`,
+    // 12 Pan Sorpresa
+    `Pan Sorpresa. Ingredientes: pan redondo, queso manchego o mozzarella, jamón, cebolla picada, aceite de oliva, ajo, orégano, perejil, aceitunas opcionales, sal, pimienta y mantequilla. Preparación: Cortar el pan en cuadritos sin llegar a la base. Abrir el pan y agregar aceite de oliva y mantequilla en las aberturas. Insertar el jamón y cebolla en las aberturas. Sazonar con sal, pimienta, ajo, orégano y perejil. Agregar queso hasta cubrir y agregar más aceite. Envolver en papel aluminio y llevar al horno. Sacar y destapar el pan para gratinar el queso durante 10 minutos.`,
+    // 13 Pavo Navideño
+    `Pavo Navideño. Ingredientes para 20 porciones: 1 pavo de 8 a 10 kilos, 1 botella de sidra, 1 kilo de carne de cerdo molida, 100 gramos de piñones, 100 gramos de pasas, 4 manzanas, 3 barras de mantequilla, 2 cebollas, un cuarto de litro de aceite de oliva, 1 cucharada de sal, 1 cucharada de pimienta negra, 3 dientes de ajo y una jeringa para inyectar. Preparación: Inyectar al pavo la sidra en pechuga, piernas y muslos. Sofreír el ajo y la cebolla finamente picados hasta que estén bien dorados. Agregar la carne y cuando esté cocida añadir la fruta seca y lo que sobró de la sidra. Rellenar el pavo con el guiso y las manzanas en trozos. Untar a todo el pavo la mantequilla, sal y pimienta. Colocar en la pavera a reposar durante 3 o 4 horas. Hornear a 160 grados hasta que se cocine.`,
+    // 14 Pay de Queso
+    `Pay de Queso. Ingredientes: 2 paquetes de galletas Marías, 2 barras de mantequilla de 90 gramos cada una, 1 barra de queso Philadelphia, 1 lata de leche condensada, 1 lata de leche evaporada, 2 cucharaditas de vainilla y 4 huevos. Precalentar a 200 grados y hornear a 180 grados durante 45 minutos. Preparación: Triturar las galletas hasta hacerlas polvo. Mezclar la galleta con la mantequilla para hacer la costra del pay. Presionar la costra en el molde. En la licuadora mezclar el Philadelphia, las leches, la vainilla y los huevos. Verter el relleno sobre la costra. Hornear a 180 grados durante 45 minutos. Dejar enfriar y refrigerar antes de servir.`,
+    // 15 Pollo a la Mostaza
+    `Pollo a la Mostaza. Ingredientes: pollo en piezas, tocino en tiras, champiñones, crema, mantequilla, mostaza al gusto y cebolla al gusto. Preparación: Freír el tocino y sacarlo. Freír el pollo en crudo en la misma grasa. Regresar el tocino al sartén. Agregar los champiñones y la cebolla. Añadir la mantequilla, crema y un poco de mostaza. Dejar que suelte el hervor y que los champiñones estén suaves. Rectificar sazón y servir acompañado de arroz o papa.`
+  ];
+
+  function showSpread(id) {
+    document.querySelectorAll('.spread').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    stopVoice();
+  }
+
+  function goToRecipe(index) {
+    showSpread('recipe-' + index);
+  }
+
+  function nextRecipe(current) {
+    if (current < TOTAL_RECIPES - 1) {
+      showSpread('recipe-' + (current + 1));
+    } else {
+      showSpread('index-spread');
+    }
+  }
+
+  function prevRecipe(current) {
+    if (current > 0) {
+      showSpread('recipe-' + (current - 1));
+    } else {
+      showSpread('index-spread');
+    }
+  }
+
+  function readRecipe(index) {
+    if (!('speechSynthesis' in window)) {
+      alert('Tu navegador no soporta síntesis de voz. Prueba en Chrome o Edge.');
+      return;
+    }
+
+    const btn = document.querySelector('#recipe-' + index + ' .btn-play');
+    
+    if (isSpeaking) {
+      stopVoice();
+      return;
+    }
+
+    const text = recipeTexts[index];
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'es-MX';
+    utterance.rate = 0.9;
+    utterance.pitch = 1.0;
+
+    // Try to find a Spanish voice
+    const voices = speechSynthesis.getVoices();
+    const spanishVoice = voices.find(v => v.lang.startsWith('es'));
+    if (spanishVoice) utterance.voice = spanishVoice;
+
+    utterance.onstart = () => {
+      isSpeaking = true;
+      if (btn) { btn.textContent = '⏹'; btn.classList.add('playing'); }
+      document.getElementById('voiceIndicator').classList.add('active');
+    };
+
+    utterance.onend = () => {
+      isSpeaking = false;
+      if (btn) { btn.textContent = '▶'; btn.classList.remove('playing'); }
+      document.getElementById('voiceIndicator').classList.remove('active');
+    };
+
+    utterance.onerror = () => {
+      isSpeaking = false;
+      if (btn) { btn.textContent = '▶'; btn.classList.remove('playing'); }
+      document.getElementById('voiceIndicator').classList.remove('active');
+    };
+
+    currentSpeech = utterance;
+    speechSynthesis.speak(utterance);
+  }
+
+  function stopVoice() {
+    if (speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+    }
+    isSpeaking = false;
+    document.querySelectorAll('.btn-play').forEach(b => {
+      b.textContent = '▶';
+      b.classList.remove('playing');
+    });
+    document.getElementById('voiceIndicator').classList.remove('active');
+  }
+
+  // Load voices when available
+  if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = () => {};
+  }
+
+  // Stop voice when changing pages
+  document.querySelectorAll('.nav-btn, .index-btn, .cover-enter-btn, .cover-emoji-item').forEach(btn => {
+    btn.addEventListener('click', stopVoice);
+  });
+</script>
+</body>
+</html>
